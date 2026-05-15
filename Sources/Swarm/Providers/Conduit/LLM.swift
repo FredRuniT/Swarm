@@ -29,12 +29,12 @@ public struct LLM: Sendable, InferenceProvider {
         case openRouter(OpenRouterConfig)
         case minimax(MiniMaxConfig)
         case ollama(OllamaConfig)
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
         case mlx(MLXConfig)
 #endif
     }
 
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
     private enum MLXConfig: Sendable {
         case mlx(String)
         case mlxLocal(String)
@@ -161,7 +161,7 @@ public struct LLM: Sendable, InferenceProvider {
         return LLM(kind: .openRouter(config))
     }
 
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
     /// Creates an MLX-backed `LLM` provider for local inference.
     ///
     /// - Parameter model: The MLX model identifier (for example, `"mlx-community/Llama-3.2-1B-Instruct-4bit"`).
@@ -246,7 +246,7 @@ public struct LLM: Sendable, InferenceProvider {
             let provider = ollamaProvider(settings: config.settings)
             let modelID = Self.openAIModelID(config.model)
             return ConduitInferenceProvider(provider: provider, model: modelID)
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
         case let .mlx(config):
             let model: Conduit.Model = switch config {
             case let .mlx(model):
@@ -282,7 +282,7 @@ public struct LLM: Sendable, InferenceProvider {
         switch kind {
         case .ollama:
             true
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
         case .mlx:
             true
 #endif
@@ -305,7 +305,7 @@ extension LLM: InferenceProviderMetadata {
             "minimax"
         case .ollama:
             "ollama"
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
         case .mlx:
             "mlx"
 #endif
@@ -324,7 +324,7 @@ extension LLM: InferenceProviderMetadata {
             config.model
         case let .ollama(config):
             config.model
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
         case let .mlx(config):
             switch config {
             case let .mlx(model):
@@ -346,7 +346,7 @@ extension LLM: InferenceProviderMetadata {
             URL(string: "https://openrouter.ai/api/v1")
         case let .ollama(config):
             URL(string: "http://\(config.settings.host):\(config.settings.port)")
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
         case .mlx:
             nil
 #endif

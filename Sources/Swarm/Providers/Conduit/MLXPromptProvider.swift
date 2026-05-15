@@ -1,4 +1,4 @@
-#if canImport(MLX)
+#if SWARM_CONDUIT_MLX
 import Conduit
 import ConduitAdvanced
 import Foundation

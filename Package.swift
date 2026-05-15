@@ -39,11 +39,15 @@ var packageDependencies: [Package.Dependency] = [
     .package(
         url: "https://github.com/christopherkarani/Conduit",
         exact: "0.3.14",
+        // MLX trait deliberately disabled — Conduit's MLXImageProvider
+        // pulls `StableDiffusion` from mlx-swift-examples which (a) we
+        // don't want and (b) xcodebuild's SPM integration can't propagate
+        // transitively. Downstream packages (e.g. CSVImportKit v4)
+        // provide their own MLX provider built on `mlx-swift-lm` directly.
         traits: [
             .trait(name: "OpenAI"),
             .trait(name: "OpenRouter"),
             .trait(name: "Anthropic"),
-            .trait(name: "MLX"),
         ]
     ),
     .package(url: "https://github.com/christopherkarani/ContextCore.git", exact: "1.0.0"),
