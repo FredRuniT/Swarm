@@ -50,7 +50,6 @@ if !coreOnly {
                 .trait(name: "OpenAI"),
                 .trait(name: "OpenRouter"),
                 .trait(name: "Anthropic"),
-                .trait(name: "MLX"),
             ]
         ),
         .package(url: "https://github.com/christopherkarani/ContextCore.git", exact: "1.0.0"),
