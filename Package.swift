@@ -3,7 +3,8 @@ import PackageDescription
 import CompilerPluginSupport
 import Foundation
 let includeDemo = ProcessInfo.processInfo.environment["SWARM_INCLUDE_DEMO"] == "1"
-let coreOnly = ProcessInfo.processInfo.environment["SWARM_CORE_ONLY"] == "1"
+let includeIntegrations = ProcessInfo.processInfo.environment["SWARM_INCLUDE_INTEGRATIONS"] == "1"
+let coreOnly = !includeIntegrations || ProcessInfo.processInfo.environment["SWARM_CORE_ONLY"] == "1"
 
 var packageProducts: [Product] = [
     .library(name: "Swarm", targets: ["Swarm"]),
@@ -259,7 +260,7 @@ let package = Package(
     ],
     products: packageProducts,
     traits: [
-        .default(enabledTraits: [integrationTrait]),
+        .default(enabledTraits: includeIntegrations ? [integrationTrait] : []),
         .trait(
             name: integrationTrait,
             description: "Enable provider, memory, graph runtime, Wax, Membrane, ContextCore, Conduit, and Hive integrations."
