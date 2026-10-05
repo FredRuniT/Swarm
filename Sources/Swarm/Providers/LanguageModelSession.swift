@@ -49,7 +49,7 @@ import Foundation
             return content
         }
 
-        public func stream(prompt: String, options _: InferenceOptions) -> AsyncThrowingStream<String, Error> {
+        public func stream(prompt: String, options _: InferenceOptions) -> AsyncThrowingStream<String, any Swift.Error> {
             StreamHelper.makeTrackedStream { continuation in
                 do {
                     // For streaming, we'll generate the full response and yield it.
